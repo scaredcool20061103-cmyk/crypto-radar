@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Alpha Monitor (V9 Aggregator)</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛸</text></svg>">
+    <title>Crypto Alpha Monitor (V10 Top10 CEX)</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -24,10 +24,15 @@
         input[type=number]::-webkit-inner-spin-button, 
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         
-        /* 品牌色 */
-        .brand-cryptorank { background: linear-gradient(to right, #2563eb, #1d4ed8); }
-        .brand-icodrops { background: linear-gradient(to right, #ea580c, #c2410c); }
-        .brand-sonar { background: linear-gradient(to right, #6366f1, #a855f7); }
+        /* CEX 品牌色 */
+        .btn-binance { background: linear-gradient(to right, #F0B90B, #d9a507); color: black; }
+        .btn-okx { background: linear-gradient(to right, #000000, #333333); border: 1px solid #555; color: white; }
+        .btn-bybit { background: linear-gradient(to right, #fbbf24, #f59e0b); color: black; }
+        .btn-bitget { background: linear-gradient(to right, #00f0ff, #00bcd4); color: black; }
+        .btn-kucoin { background: linear-gradient(to right, #24ae8f, #1b8a70); color: white; }
+        .btn-mexc { background: linear-gradient(to right, #3853f5, #263ab5); color: white; }
+        .btn-htx { background: linear-gradient(to right, #2b6bf5, #1e4bd1); color: white; }
+        .btn-gate { background: linear-gradient(to right, #0d9488, #0f766e); color: white; }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-100 min-h-screen font-sans">
@@ -38,9 +43,9 @@
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
                 <div>
                     <h1 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">
-                        Crypto Alpha Monitor <span class="text-xs border border-blue-500 text-blue-400 px-2 py-0.5 rounded ml-2">V9 Aggregator</span>
+                        Crypto Alpha Monitor <span class="text-xs border border-blue-500 text-blue-400 px-2 py-0.5 rounded ml-2">V10 Top Exchanges</span>
                     </h1>
-                    <p class="text-gray-400 text-sm mt-1">RWA, Yields & ICO/IDO Intelligence</p>
+                    <p class="text-gray-400 text-sm mt-1">RWA, Yields & Global Launchpad Aggregator</p>
                 </div>
                 <div class="flex items-center gap-4">
                     <span class="hidden md:inline-block px-3 py-1 rounded-full text-xs font-medium" 
@@ -61,8 +66,8 @@
                 </button>
                 <button @click="currentTab = 'ido'" 
                         class="px-4 md:px-6 py-2 md:py-3 font-bold transition flex items-center gap-2 border-b-2 whitespace-nowrap text-sm md:text-base"
-                        :class="currentTab === 'ido' ? 'border-orange-500 text-orange-400 bg-gray-800/50' : 'border-transparent text-gray-400 hover:text-gray-200 hover:bg-gray-800/30'">
-                    <i class="fas fa-database"></i> ICO/IDO 數據聚合
+                        :class="currentTab === 'ido' ? 'border-yellow-500 text-yellow-400 bg-gray-800/50' : 'border-transparent text-gray-400 hover:text-gray-200 hover:bg-gray-800/30'">
+                    <i class="fas fa-crown"></i> 頂級交易所 Launchpads
                 </button>
             </div>
         </header>
@@ -133,189 +138,108 @@
             <div v-if="currentTab === 'ido'" key="ido" class="pt-4 space-y-6">
                 
                 <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
                     <div class="glass rounded-xl p-6 border-t-4 border-blue-600">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                                <i class="fas fa-chart-line text-blue-500"></i> CryptoRank
-                            </h2>
-                            <span class="text-xs bg-blue-900 text-blue-200 px-2 py-1 rounded">數據最全</span>
+                            <h2 class="text-xl font-bold text-white"><i class="fas fa-chart-line text-blue-500 mr-2"></i>CryptoRank</h2>
                         </div>
-                        <p class="text-sm text-gray-400 mb-4">提供詳細的 IDO/IEO 融資金額、投資機構(Backers)與 ROI 分析。</p>
                         <div class="grid grid-cols-2 gap-3">
-                            <a href="https://cryptorank.io/upcoming-ico" target="_blank" class="brand-cryptorank text-white py-2 rounded text-center text-sm font-bold hover:opacity-90">
-                                📅 Upcoming IDO
-                            </a>
-                            <a href="https://cryptorank.io/active-ico" target="_blank" class="bg-gray-700 text-white py-2 rounded text-center text-sm hover:bg-gray-600">
-                                🟢 Active IDO
-                            </a>
-                            <a href="https://cryptorank.io/funding-rounds" target="_blank" class="bg-gray-800 border border-gray-600 text-gray-300 py-2 rounded text-center text-sm hover:bg-gray-700 col-span-2">
-                                💰 融資輪次 (Funding Rounds)
-                            </a>
+                            <a href="https://cryptorank.io/upcoming-ico" target="_blank" class="bg-blue-600 text-white py-2 rounded text-center text-sm font-bold hover:opacity-90">📅 Upcoming IDO</a>
+                            <a href="https://cryptorank.io/active-ico" target="_blank" class="bg-gray-700 text-white py-2 rounded text-center text-sm hover:bg-gray-600">🟢 Active IDO</a>
                         </div>
                     </div>
-
                     <div class="glass rounded-xl p-6 border-t-4 border-orange-600">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                                <i class="fas fa-droplet text-orange-500"></i> ICO Drops
-                            </h2>
-                            <span class="text-xs bg-orange-900 text-orange-200 px-2 py-1 rounded">評級準確</span>
+                            <h2 class="text-xl font-bold text-white"><i class="fas fa-droplet text-orange-500 mr-2"></i>ICO Drops</h2>
                         </div>
-                        <p class="text-sm text-gray-400 mb-4">老牌 ICO 評級網站，可以快速區分項目熱度 (Hype) 與風險。</p>
                         <div class="grid grid-cols-2 gap-3">
-                            <a href="https://icodrops.com/category/upcoming-ico/" target="_blank" class="brand-icodrops text-white py-2 rounded text-center text-sm font-bold hover:opacity-90">
-                                📅 Upcoming List
-                            </a>
-                            <a href="https://icodrops.com/category/active-ico/" target="_blank" class="bg-gray-700 text-white py-2 rounded text-center text-sm hover:bg-gray-600">
-                                🟢 Active List
-                            </a>
-                            <a href="https://icodrops.com/category/ended-ico/" target="_blank" class="bg-gray-800 border border-gray-600 text-gray-300 py-2 rounded text-center text-sm hover:bg-gray-700 col-span-2">
-                                🏁 Ended (ROI Check)
-                            </a>
+                            <a href="https://icodrops.com/category/upcoming-ico/" target="_blank" class="bg-orange-600 text-white py-2 rounded text-center text-sm font-bold hover:opacity-90">📅 Upcoming List</a>
+                            <a href="https://icodrops.com/category/active-ico/" target="_blank" class="bg-gray-700 text-white py-2 rounded text-center text-sm hover:bg-gray-600">🟢 Active List</a>
                         </div>
                     </div>
                 </section>
 
                 <section class="glass rounded-xl p-6">
-                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-purple-400">
-                        <i class="fas fa-rocket"></i> Alpha Presale 平台
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-yellow-400">
+                        <i class="fas fa-globe"></i> 世界頂級交易所 Launchpad & 打新
                     </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <a href="https://twitter.com/echodotxyz" target="_blank" class="block bg-gray-800 p-4 rounded border border-gray-700 hover:border-purple-500 transition group">
-                            <div class="font-bold text-white mb-1 group-hover:text-purple-400">Sonar (Echo)</div>
-                            <div class="text-xs text-gray-400">MegaETH, Octra 等頂級項目</div>
-                        </a>
-                        <a href="https://twitter.com/buidlpad" target="_blank" class="block bg-gray-800 p-4 rounded border border-gray-700 hover:border-white transition group">
-                            <div class="font-bold text-white mb-1">BuidlPad</div>
-                            <div class="text-xs text-gray-400">CoinList 的強力競爭對手</div>
-                        </a>
-                        <a href="https://coinlist.co/token-sales" target="_blank" class="block bg-gray-800 p-4 rounded border border-gray-700 hover:border-red-500 transition group">
-                            <div class="font-bold text-white mb-1 group-hover:text-red-400">CoinList</div>
-                            <div class="text-xs text-gray-400">傳統合規公募龍頭</div>
-                        </a>
-                        <a href="https://www.fjordfoundry.com/pools" target="_blank" class="block bg-gray-800 p-4 rounded border border-gray-700 hover:border-blue-500 transition group">
-                            <div class="font-bold text-white mb-1 group-hover:text-blue-400">Fjord Foundry</div>
-                            <div class="text-xs text-gray-400">LBP 公平發射池</div>
-                        </a>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <div class="bg-gray-800 rounded p-4 border border-gray-700 hover:border-yellow-500 transition">
+                            <div class="font-bold text-yellow-500 mb-1">Binance</div>
+                            <div class="text-xs text-gray-400 mb-3">Launchpool & Megadrop</div>
+                            <a href="https://launchpad.binance.com/en" target="_blank" class="block btn-binance py-1.5 rounded text-center text-sm font-bold">前往 Launchpad</a>
+                        </div>
+
+                        <div class="bg-gray-800 rounded p-4 border border-gray-700 hover:border-white transition">
+                            <div class="font-bold text-white mb-1">OKX</div>
+                            <div class="text-xs text-gray-400 mb-3">On-chain Earn & Boosts</div>
+                            <div class="flex gap-2">
+                                <a href="https://www.okx.com/defi" target="_blank" class="flex-1 btn-okx py-1.5 rounded text-center text-sm font-bold">DeFi Boost</a>
+                                <a href="https://twitter.com/search?q=from%3AOKX%20(%22Boost%22%20OR%20%22APY%22)&src=typed_query" target="_blank" class="bg-gray-700 px-3 py-1.5 rounded text-white text-sm"><i class="fab fa-twitter"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-800 rounded p-4 border border-gray-700 hover:border-yellow-600 transition">
+                            <div class="font-bold text-yellow-400 mb-1">Bybit</div>
+                            <div class="text-xs text-gray-400 mb-3">Launchpool & Token Splash</div>
+                            <a href="https://www.bybit.com/en/trade/spot/launchpool" target="_blank" class="block btn-bybit py-1.5 rounded text-center text-sm font-bold">前往 Launchpool</a>
+                        </div>
+
+                        <div class="bg-gray-800 rounded p-4 border border-gray-700 hover:border-cyan-400 transition">
+                            <div class="font-bold text-cyan-400 mb-1">Bitget</div>
+                            <div class="text-xs text-gray-400 mb-3">Launchpad & PoolX (挖礦)</div>
+                            <a href="https://www.bitget.com/events/launchpad" target="_blank" class="block btn-bitget py-1.5 rounded text-center text-sm font-bold">前往 PoolX/Launch</a>
+                        </div>
+
+                        <div class="bg-gray-800 rounded p-4 border border-gray-700 hover:border-green-500 transition">
+                            <div class="font-bold text-green-400 mb-1">KuCoin</div>
+                            <div class="text-xs text-gray-400 mb-3">Spotlight & BurningDrop</div>
+                            <a href="https://www.kucoin.com/spotlight" target="_blank" class="block btn-kucoin py-1.5 rounded text-center text-sm font-bold">前往 Spotlight</a>
+                        </div>
+
+                        <div class="bg-gray-800 rounded p-4 border border-gray-700 hover:border-teal-500 transition">
+                            <div class="font-bold text-teal-400 mb-1">Gate.io</div>
+                            <div class="text-xs text-gray-400 mb-3">Startup (Free Airdrops)</div>
+                            <a href="https://www.gate.io/startup" target="_blank" class="block btn-gate py-1.5 rounded text-center text-sm font-bold">前往 Startup</a>
+                        </div>
+
+                        <div class="bg-gray-800 rounded p-4 border border-gray-700 hover:border-blue-500 transition">
+                            <div class="font-bold text-blue-400 mb-1">MEXC</div>
+                            <div class="text-xs text-gray-400 mb-3">Kickstarter (持幣空投)</div>
+                            <a href="https://www.mexc.com/sun/assessment" target="_blank" class="block btn-mexc py-1.5 rounded text-center text-sm font-bold">前往 Kickstarter</a>
+                        </div>
+
+                        <div class="bg-gray-800 rounded p-4 border border-gray-700 hover:border-blue-700 transition">
+                            <div class="font-bold text-blue-600 mb-1">HTX</div>
+                            <div class="text-xs text-gray-400 mb-3">Primelist & PrimeEarn</div>
+                            <a href="https://www.htx.com/prime" target="_blank" class="block btn-htx py-1.5 rounded text-center text-sm font-bold">前往 Prime</a>
+                        </div>
                     </div>
                 </section>
 
-                <section class="glass rounded-xl p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-xl font-bold flex items-center gap-2 text-green-400">
-                            <i class="fas fa-list-ul"></i> 2025/2026 重點 Alpha 觀察清單
-                        </h2>
-                        <span class="text-xs text-gray-500">Based on CryptoRank & ICODrops High Hype</span>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse text-sm">
-                            <thead>
-                                <tr class="text-gray-400 border-b border-gray-700">
-                                    <th class="p-3">項目名稱</th>
-                                    <th class="p-3">類別</th>
-                                    <th class="p-3">融資/背景</th>
-                                    <th class="p-3 text-center">數據來源</th>
-                                    <th class="p-3 text-center">社群熱度</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-700">
-                                <tr class="hover:bg-gray-800/50">
-                                    <td class="p-3">
-                                        <div class="font-bold text-white">Monad</div>
-                                        <div class="text-xs text-purple-400">Layer 1</div>
-                                    </td>
-                                    <td class="p-3 text-gray-400">EVM Parallel</td>
-                                    <td class="p-3 text-gray-300">$225M (Paradigm)</td>
-                                    <td class="p-3 text-center">
-                                        <a href="https://cryptorank.io/ico/monad" target="_blank" class="text-blue-400 hover:text-white underline text-xs">
-                                            CryptoRank
-                                        </a>
-                                    </td>
-                                    <td class="p-3 text-center"><a href="https://twitter.com/search?q=Monad%20Crypto&src=typed_query" target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a></td>
-                                </tr>
-                                <tr class="hover:bg-gray-800/50">
-                                    <td class="p-3">
-                                        <div class="font-bold text-white">Berachain</div>
-                                        <div class="text-xs text-purple-400">Layer 1</div>
-                                    </td>
-                                    <td class="p-3 text-gray-400">DeFi / Liquidity</td>
-                                    <td class="p-3 text-gray-300">$100M+ (Polychain)</td>
-                                    <td class="p-3 text-center">
-                                        <a href="https://cryptorank.io/ico/berachain" target="_blank" class="text-blue-400 hover:text-white underline text-xs">
-                                            CryptoRank
-                                        </a>
-                                    </td>
-                                    <td class="p-3 text-center"><a href="https://twitter.com/search?q=Berachain&src=typed_query" target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a></td>
-                                </tr>
-                                <tr class="hover:bg-gray-800/50">
-                                    <td class="p-3">
-                                        <div class="font-bold text-white">Story Protocol</div>
-                                        <div class="text-xs text-yellow-400">IP / RWA</div>
-                                    </td>
-                                    <td class="p-3 text-gray-400">Programmable IP</td>
-                                    <td class="p-3 text-gray-300">$140M (a16z)</td>
-                                    <td class="p-3 text-center">
-                                        <a href="https://cryptorank.io/ico/story-protocol" target="_blank" class="text-blue-400 hover:text-white underline text-xs">
-                                            CryptoRank
-                                        </a>
-                                    </td>
-                                    <td class="p-3 text-center"><a href="https://twitter.com/search?q=Story%20Protocol&src=typed_query" target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a></td>
-                                </tr>
-                                <tr class="hover:bg-gray-800/50">
-                                    <td class="p-3">
-                                        <div class="font-bold text-white">Movement</div>
-                                        <div class="text-xs text-purple-400">L2</div>
-                                    </td>
-                                    <td class="p-3 text-gray-400">MoveVM on Eth</td>
-                                    <td class="p-3 text-gray-300">$38M (Polychain)</td>
-                                    <td class="p-3 text-center">
-                                        <a href="https://cryptorank.io/ico/movement" target="_blank" class="text-blue-400 hover:text-white underline text-xs">
-                                            CryptoRank
-                                        </a>
-                                    </td>
-                                    <td class="p-3 text-center"><a href="https://twitter.com/search?q=Movement%20Labs&src=typed_query" target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a></td>
-                                </tr>
-                                <tr class="hover:bg-gray-800/50">
-                                    <td class="p-3">
-                                        <div class="font-bold text-white">MegaETH</div>
-                                        <div class="text-xs text-blue-400">L2</div>
-                                    </td>
-                                    <td class="p-3 text-gray-400">Real-time EVM</td>
-                                    <td class="p-3 text-gray-300">$20M (Vitalik backed)</td>
-                                    <td class="p-3 text-center">
-                                        <a href="https://icodrops.com/" target="_blank" class="text-orange-400 hover:text-white underline text-xs">
-                                            ICODrops (Search)
-                                        </a>
-                                    </td>
-                                    <td class="p-3 text-center"><a href="https://twitter.com/search?q=MegaETH&src=typed_query" target="_blank" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <section class="glass rounded-xl p-6 border border-purple-500/30">
+                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-purple-400">
+                        <i class="fas fa-rocket"></i> 一級市場 & TGE 平台
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-800 p-4 rounded border border-gray-600">
+                            <div class="font-bold text-white">Sonar (Echo)</div>
+                            <div class="text-xs text-gray-400 mb-2">MegaETH, Octra 等頂級 Alpha</div>
+                            <a href="https://twitter.com/echodotxyz" target="_blank" class="block text-center text-indigo-400 hover:text-white border border-indigo-500/50 rounded py-1 text-xs">追蹤推特 (唯一入口)</a>
+                        </div>
+                        <div class="bg-gray-800 p-4 rounded border border-gray-600">
+                            <div class="font-bold text-white">BuidlPad</div>
+                            <div class="text-xs text-gray-400 mb-2">Tier 1 項目發射台</div>
+                            <a href="https://twitter.com/buidlpad" target="_blank" class="block text-center text-gray-300 hover:text-white border border-gray-500 rounded py-1 text-xs">追蹤推特</a>
+                        </div>
+                        <div class="bg-gray-800 p-4 rounded border border-gray-600">
+                            <div class="font-bold text-white">CoinList</div>
+                            <div class="text-xs text-gray-400 mb-2">傳統公募平台</div>
+                            <a href="https://coinlist.co/token-sales" target="_blank" class="block text-center text-red-400 hover:text-white border border-red-500/50 rounded py-1 text-xs">Active Sales</a>
+                        </div>
                     </div>
                 </section>
                 
-                <section class="glass rounded-xl p-6 border border-yellow-500/20">
-                    <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-yellow-400">
-                        <i class="fas fa-exchange-alt"></i> CEX 交易所打新
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <a href="https://www.okx.com/jumpstart" target="_blank" class="bg-gray-800 hover:bg-gray-700 p-4 rounded border-l-4 border-white transition">
-                            <div class="font-bold text-white">OKX Jumpstart</div>
-                            <div class="text-xs text-gray-400">質押 BTC/ETH 挖新幣 (高收益)</div>
-                        </a>
-                        <a href="https://www.bybit.com/en/trade/spot/token-splash" target="_blank" class="bg-gray-800 hover:bg-gray-700 p-4 rounded border-l-4 border-yellow-500 transition">
-                            <div class="font-bold text-yellow-400">Bybit Token Splash</div>
-                            <div class="text-xs text-gray-400">充值/交易新幣瓜分獎池</div>
-                        </a>
-                        <a href="https://www.gate.io/startup" target="_blank" class="bg-gray-800 hover:bg-gray-700 p-4 rounded border-l-4 border-teal-500 transition">
-                            <div class="font-bold text-teal-400">Gate.io Startup</div>
-                            <div class="text-xs text-gray-400">免費空投首發項目</div>
-                        </a>
-                    </div>
-                </section>
-
             </div>
         </transition>
 

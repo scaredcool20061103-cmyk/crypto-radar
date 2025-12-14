@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Alpha Monitor (V10 Top10 CEX)</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💎</text></svg>">
+    <title>Crypto Alpha Monitor (V11 Operations)</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛠️</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -43,7 +43,7 @@
             <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
                 <div>
                     <h1 class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">
-                        Crypto Alpha Monitor <span class="text-xs border border-blue-500 text-blue-400 px-2 py-0.5 rounded ml-2">V10 Top Exchanges</span>
+                        Crypto Alpha Monitor <span class="text-xs border border-blue-500 text-blue-400 px-2 py-0.5 rounded ml-2">V11 Ops</span>
                     </h1>
                     <p class="text-gray-400 text-sm mt-1">RWA, Yields & Global Launchpad Aggregator</p>
                 </div>
@@ -91,40 +91,68 @@
                             </select>
                         </div>
                     </div>
+                    
                     <div class="glass rounded-xl p-4 md:p-6 min-h-[500px]">
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="text-gray-400 text-sm border-b border-gray-700">
-                                        <th class="p-3">項目</th>
+                                        <th class="p-3">項目 (官網)</th>
                                         <th class="p-3">鏈 (Gas)</th>
                                         <th class="p-3">幣種</th>
                                         <th class="p-3 text-right">TVL / APY</th>
-                                        <th class="p-3 text-center">操作</th>
+                                        <th class="p-3 text-center">教學與情報</th>
                                     </tr>
                                 </thead>
                                 <tbody class="text-sm">
                                     <tr v-if="loading" class="animate-pulse"><td colspan="5" class="p-8 text-center text-gray-500">Scanning...</td></tr>
                                     <tr v-for="pool in filteredPools" :key="pool.pool" class="border-b border-gray-800 hover:bg-gray-800/50 transition">
+                                        
                                         <td class="p-3">
-                                            <a :href="'https://defillama.com/yields/pool/' + pool.pool" target="_blank" class="font-bold text-blue-400 hover:underline block">{{ pool.project }}</a>
+                                            <a :href="getProjectUrl(pool.project)" target="_blank" class="font-bold text-blue-400 hover:text-blue-200 hover:underline flex items-center gap-2 text-base">
+                                                {{ pool.project }} 
+                                                <i class="fas fa-external-link-alt text-[10px] opacity-50"></i>
+                                            </a>
+                                            <div class="mt-1">
+                                                <a v-if="getProjectTwitter(pool.project)" :href="'https://twitter.com/' + getProjectTwitter(pool.project)" target="_blank" class="text-xs text-gray-500 hover:text-blue-400 inline-flex items-center gap-1">
+                                                    <i class="fab fa-twitter"></i> Official
+                                                </a>
+                                            </div>
                                         </td>
+
                                         <td class="p-3">
                                             <span class="px-2 py-0.5 rounded bg-gray-700 text-xs">{{ pool.chain }}</span>
                                             <div class="text-[10px] text-gray-400 mt-1" v-if="gasPrices[pool.chain]">⛽ {{ gasPrices[pool.chain] }} Gwei</div>
                                         </td>
-                                        <td class="p-3"><div class="flex flex-wrap gap-1 max-w-[100px]"><span v-for="t in pool.symbol.split('-')" :key="t" class="px-1.5 py-0.5 bg-indigo-900/40 text-indigo-300 text-[10px] rounded">{{ t }}</span></div></td>
-                                        <td class="p-3 text-right">
-                                            <div class="text-green-400 font-bold">{{ pool.apy.toFixed(2) }}%</div>
-                                            <div class="text-gray-500 text-xs">${{ formatNumber(pool.tvlUsd) }}</div>
+                                        
+                                        <td class="p-3">
+                                            <div class="flex flex-wrap gap-1 max-w-[120px]">
+                                                <span v-for="t in pool.symbol.split('-')" :key="t" class="px-1.5 py-0.5 bg-indigo-900/40 text-indigo-300 text-[10px] rounded border border-indigo-500/20">{{ t }}</span>
+                                            </div>
                                         </td>
-                                        <td class="p-3 text-center"><a :href="generateStakingSearch(pool.project, pool.symbol)" target="_blank" class="text-gray-400 hover:text-white"><i class="fas fa-search"></i></a></td>
+                                        
+                                        <td class="p-3 text-right">
+                                            <div class="text-green-400 font-bold text-lg">{{ pool.apy.toFixed(2) }}%</div>
+                                            <div class="text-gray-500 text-xs font-mono">${{ formatNumber(pool.tvlUsd) }}</div>
+                                        </td>
+                                        
+                                        <td class="p-3 text-center">
+                                            <div class="flex flex-col gap-2 items-center">
+                                                <a :href="generateStakingSearch(pool.project, pool.symbol)" target="_blank" class="w-full max-w-[100px] bg-gray-700 hover:bg-blue-600 text-gray-200 hover:text-white px-2 py-1.5 rounded text-xs transition border border-gray-600 flex items-center justify-center gap-1">
+                                                    <i class="fab fa-twitter"></i> 搜教學
+                                                </a>
+                                                <a :href="'https://defillama.com/yields/pool/' + pool.pool" target="_blank" class="w-full max-w-[100px] bg-gray-800 hover:bg-gray-700 text-gray-400 hover:text-white px-2 py-1 rounded text-[10px] transition border border-gray-700 flex items-center justify-center gap-1">
+                                                    <i class="fas fa-chart-bar"></i> 歷史數據
+                                                </a>
+                                            </div>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+                
                 <div class="space-y-6">
                     <div class="glass rounded-xl p-6">
                          <h2 class="text-xl font-bold mb-4">📡 RWA Radar</h2>
@@ -234,7 +262,7 @@
                         </div>
                         <div class="bg-gray-800 p-4 rounded border border-gray-600">
                             <div class="font-bold text-white">CoinList</div>
-                            <div class="text-xs text-gray-400 mb-2">傳統公募平台</div>
+                            <div class="text-xs text-gray-400 mb-2">傳統合規公募</div>
                             <a href="https://coinlist.co/token-sales" target="_blank" class="block text-center text-red-400 hover:text-white border border-red-500/50 rounded py-1 text-xs">Active Sales</a>
                         </div>
                     </div>
@@ -272,7 +300,15 @@
                     try {
                         const [proto, pool] = await Promise.all([ fetch('https://api.llama.fi/protocols'), fetch('https://yields.llama.fi/pools') ]);
                         const pData = await proto.json();
-                        pData.forEach(p => { this.protocols[p.name.toLowerCase()] = p.twitter; this.protocols[p.slug.toLowerCase()] = p.twitter; });
+                        
+                        // 建立 Protocol 詳細資料映射 (含 Twitter 和 官網 URL)
+                        this.protocols = {};
+                        pData.forEach(p => { 
+                            const info = { twitter: p.twitter, url: p.url };
+                            this.protocols[p.name.toLowerCase()] = info; 
+                            this.protocols[p.slug.toLowerCase()] = info; 
+                        });
+                        
                         const pResult = await pool.json();
                         if (pResult.data) this.pools = pResult.data;
                         this.statusMessage = 'Updated';
@@ -288,7 +324,21 @@
                     };
                     await Promise.all(Object.entries(RPC_ENDPOINTS).map(([c, u]) => fetchGas(c, u)));
                 },
-                generateStakingSearch(p, s) { return `https://twitter.com/search?q=${encodeURIComponent(`"${p}" (${s}) ("how to stake" OR "staking guide") min_faves:5`)}&src=typed_query`; },
+                getProjectTwitter(n) {
+                    if (!n) return null;
+                    const data = this.protocols[n.toLowerCase()];
+                    return data ? data.twitter : null;
+                },
+                getProjectUrl(n) {
+                    if (!n) return '#';
+                    const data = this.protocols[n.toLowerCase()];
+                    // 如果有官網 URL 就回傳，否則暫時回傳 # (不跳轉)
+                    return data ? data.url : '#';
+                },
+                generateStakingSearch(p, s) { 
+                    // 產生 X 搜尋連結: 項目 + 幣種 + how to stake
+                    return `https://twitter.com/search?q=${encodeURIComponent(`"${p}" (${s}) ("how to stake" OR "staking guide" OR "tutorial") min_faves:2`)}&src=typed_query`; 
+                },
                 formatNumber(n) { 
                     if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
                     if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
